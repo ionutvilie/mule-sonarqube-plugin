@@ -22,7 +22,7 @@ import com.mulesoft.services.tools.sonarqube.rule.MuleRulesDefinition;
 
 /**
  * Mule Sensor Iterates over all mule files and applies the corresponding rules
- * 
+ *
  * @author franco.perez
  *
  */
@@ -34,7 +34,7 @@ public class MuleSensor implements Sensor {
 
 	@Override
 	public void describe(SensorDescriptor descriptor) {
-		descriptor.onlyOnLanguage(MuleLanguage.LANGUAGE_KEY);
+		descriptor.onlyOnLanguage("xml");
 		descriptor.createIssuesForRuleRepositories(MuleRulesDefinition.MULE3_REPOSITORY_KEY,
 				MuleRulesDefinition.MULE4_REPOSITORY_KEY);
 	}
@@ -49,7 +49,7 @@ public class MuleSensor implements Sensor {
 
 		FilePredicates p = fs.predicates();
 		Map<RuleKey, List<NewIssue>> issues = new HashMap<RuleKey, List<NewIssue>>();
-		fs.inputFiles(p.and(p.hasLanguage(MuleLanguage.LANGUAGE_KEY), new MuleFilePredicate(new MuleLanguage(context.config()).getFileSuffixes())))
+		fs.inputFiles(p.and(p.hasLanguage("xml"), new MuleFilePredicate(new MuleLanguage(context.config()).getFileSuffixes())))
 				.forEach(new SonarRuleConsumer(getLanguage(context), context, issues));
 
 		// Iterate and save all the issues
